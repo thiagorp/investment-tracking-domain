@@ -2,9 +2,10 @@ require 'investments/tax_calculators/basic'
 
 module Investments
   class Asset
-    attr_reader :price, :start_date
+    attr_reader :id, :price, :start_date
 
     def initialize(args)
+      @id = args[:id]
       @initial_amount = args[:initial_amount]
       @price = args[:amount] || @initial_amount
       @start_date = args[:start_date]
