@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'investments/roles/account_repository'
+require 'domain/investments/roles/account_repository'
 require 'investments/account'
 
 class AccountRepositoryDouble

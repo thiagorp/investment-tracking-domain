@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'investments/roles/tax_calculatable'
+require 'domain/investments/roles/tax_calculatable'
 require 'investments/tax_calculators/basic'
 
 class AssetDouble
