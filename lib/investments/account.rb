@@ -2,9 +2,10 @@ require 'investments/asset'
 
 module Investments
   class Account
-    attr_reader :unassigned_money, :assets
+    attr_reader :name, :unassigned_money, :assets
 
     def initialize(args)
+      @name = args[:name]
       @unassigned_money = args[:unassigned_money]
       @assets = args[:assets] || []
     end
