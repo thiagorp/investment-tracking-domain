@@ -17,7 +17,7 @@ class AccountRepositoryDouble
 end
 
 class AccountRepositoryDoubleTest < MiniTest::Test
-  include AccountRepository
+  include Investments::AccountRepository
 
   def repository
     AccountRepositoryDouble.new
