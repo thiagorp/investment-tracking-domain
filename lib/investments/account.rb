@@ -1,24 +1,38 @@
+require 'investments/asset'
+
 module Investments
   class Account
-    attr_reader :unassigned_money, :investments
+    attr_reader :unassigned_money, :assets
 
     def initialize(args)
       @unassigned_money = args[:unassigned_money]
-      @investments = args[:investments] || []
+      @assets = args[:assets] || []
     end
 
     def deposit(amount)
       @unassigned_money += amount
     end
 
-    def invest(amount, asset_class: Asset)
+    def withdraw(amount)
       raise NotEnoughMoney unless have_enough_money?(amount)
-
       @unassigned_money -= amount
-      @investments << asset_class.new(
+    end
+
+    def invest(amount, asset_class: Asset)
+      withdraw(amount)
+
+      @assets << asset_class.new(
         initial_amount: amount,
         start_date: Date.today
       )
+    end
+
+    def sell_asset(asset:, pre_taxes_price:)
+      raise AssetNotFound unless assets.include?(asset)
+
+      asset.change_price(pre_taxes_price)
+      deposit(asset.sell)
+      @assets.delete(asset)
     end
 
     private
@@ -32,4 +46,5 @@ module Investments
   end
 
   class NotEnoughMoney < StandardError; end
+  class AssetNotFound < StandardError; end
 end
