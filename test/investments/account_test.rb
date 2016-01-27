@@ -32,4 +32,14 @@ class InvestmentsAccountTest < MiniTest::Test
     assert_equal account.unassigned_money, 500
     assert_includes account.investments, 'new investment'
   end
+
+  def test_it_raises_when_investing_more_than_available
+    account = Investments::Account.new(
+      unassigned_money: 1000
+    )
+
+    assert_raises(Investments::NotEnoughMoney) do
+      account.invest(1500)
+    end
+  end
 end
