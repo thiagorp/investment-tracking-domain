@@ -2,8 +2,24 @@ require 'test_helper'
 require 'investments/account'
 
 class InvestmentsAccountTest < MiniTest::Test
+  def test_it_calls_create_account_on_repository_if_no_id_is_given
+    repository = MiniTest::Mock.new
+    repository.expect :create_account, true, [Investments::Account]
+
+    Investments::Account.new(
+      account_params(
+        id: nil,
+        repository: repository
+      )
+    )
+
+    repository.verify
+  end
+
   def test_it_deposits_money
-    account = Investments::Account.new(unassigned_money: 0)
+    account = Investments::Account.new(
+      account_params(unassigned_money: 0)
+    )
 
     account.deposit(1300)
 
@@ -11,7 +27,9 @@ class InvestmentsAccountTest < MiniTest::Test
   end
 
   def test_it_withdraws_money
-    account = Investments::Account.new(unassigned_money: 1000)
+    account = Investments::Account.new(
+      account_params(unassigned_money: 1000)
+    )
 
     account.withdraw(300)
 
@@ -19,7 +37,9 @@ class InvestmentsAccountTest < MiniTest::Test
   end
 
   def test_it_raises_when_withdrawing_more_than_available
-    account = Investments::Account.new(unassigned_money: 1000)
+    account = Investments::Account.new(
+      account_params(unassigned_money: 1000)
+    )
     
     assert_raises(Investments::NotEnoughMoney) do
       account.withdraw(1500)
@@ -39,7 +59,7 @@ class InvestmentsAccountTest < MiniTest::Test
       ]
     )
     account = Investments::Account.new(
-      unassigned_money: 1500
+      account_params(unassigned_money: 1500)
     )
 
     account.invest(1000, asset_class: asset_class)
@@ -51,7 +71,7 @@ class InvestmentsAccountTest < MiniTest::Test
 
   def test_it_raises_when_investing_more_than_available
     account = Investments::Account.new(
-      unassigned_money: 1000
+      account_params(unassigned_money: 1000)
     )
 
     assert_raises(Investments::NotEnoughMoney) do
@@ -66,8 +86,10 @@ class InvestmentsAccountTest < MiniTest::Test
     asset.expect :change_price, nil, [selling_price]
     asset.expect :sell, after_taxes_price
     account = Investments::Account.new(
-      unassigned_money: 1000,
-      assets: [asset]
+      account_params(
+        unassigned_money: 1000,
+        assets: [asset]
+      )
     )
 
     account.sell_asset(
@@ -82,10 +104,20 @@ class InvestmentsAccountTest < MiniTest::Test
 
   def test_it_raises_if_trying_to_sell_an_unexistent_asset
     asset = ''
-    account = Investments::Account.new(assets: [])
+    account = Investments::Account.new(
+      account_params(assets: [])
+    )
 
     assert_raises(Investments::AssetNotFound) do
       account.sell_asset(asset: asset, pre_taxes_price: 1000)
     end
+  end
+
+  private
+
+  def account_params(override)
+    {
+      id: 1
+    }.merge(override)
   end
 end

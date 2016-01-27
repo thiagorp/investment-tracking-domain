@@ -5,10 +5,13 @@ module Investments
     attr_reader :id, :name, :unassigned_money, :assets
 
     def initialize(args)
-      @id = args[:id]
       @name = args[:name]
       @unassigned_money = args[:unassigned_money]
       @assets = args[:assets] || []
+
+      @repository = args[:repository]
+
+      @id = args[:id] || @repository.create_account(self)
     end
 
     def deposit(amount)
