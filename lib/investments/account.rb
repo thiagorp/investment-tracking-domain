@@ -8,6 +8,7 @@ module Investments
       @name = args[:name]
       @unassigned_money = args[:unassigned_money]
       @assets = args[:assets] || []
+      @investor = args[:investor]
 
       @repository = args[:repository]
 
