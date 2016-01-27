@@ -3,24 +3,24 @@ require 'domain/investments/roles/account_repository'
 require 'investments/account'
 
 class AccountRepositoryDouble
-  def self.create_account(account)
+  def create_account(account)
   end
 
-  def self.update_amount(account)
+  def update_amount(account)
   end
 
-  def self.create_asset(account, asset)
+  def create_asset(account, asset)
   end
 
-  def self.destroy_asset(asset)
+  def destroy_asset(asset)
   end
 end
 
 class AccountRepositoryDoubleTest < MiniTest::Test
   include AccountRepository
 
-  def repository_class
-    AccountRepositoryDouble
+  def repository
+    AccountRepositoryDouble.new
   end
 end
 
@@ -177,7 +177,7 @@ class InvestmentsAccountTest < MiniTest::Test
   def account_params(override)
     {
       id: 1,
-      repository: AccountRepositoryDouble
+      repository: AccountRepositoryDouble.new
     }.merge(override)
   end
 end
