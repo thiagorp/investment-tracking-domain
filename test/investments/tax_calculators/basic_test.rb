@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'investments/roles/tax_calculatable'
 require 'investments/tax_calculators/basic'
 
 class AssetDouble
@@ -10,6 +11,14 @@ class AssetDouble
 
   def price
     1000
+  end
+end
+
+class AssetDoubleTest < MiniTest::Test
+  include TaxCalculatable
+
+  def tax_calculatable_object
+    AssetDouble.new({})
   end
 end
 

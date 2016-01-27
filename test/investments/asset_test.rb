@@ -1,7 +1,10 @@
 require 'test_helper'
+require 'investments/roles/tax_calculatable'
 require 'investments/asset'
 
 class InvestmentsAssetTest < MiniTest::Test
+  include TaxCalculatable
+
   def test_it_updates_its_price_if_valid
     asset = Investments::Asset.new(initial_amount: 1000)
 
@@ -45,7 +48,7 @@ class InvestmentsAssetTest < MiniTest::Test
     Date.today - days_ago
   end
 
-  def days_from_now(days)
-    days * 24 * 60 * 60
+  def tax_calculatable_object
+    Investments::Asset.new({})
   end
 end
