@@ -36,6 +36,7 @@ module Investments
       )
 
       @assets << asset
+      @repository.create_asset(self, asset)
     end
 
     def sell_asset(asset:, pre_taxes_price:)
@@ -44,6 +45,7 @@ module Investments
       asset.change_price(pre_taxes_price)
       deposit(asset.sell)
       @assets.delete(asset)
+      @repository.destroy_asset(asset)
     end
 
     private

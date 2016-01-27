@@ -85,6 +85,7 @@ class InvestmentsAccountTest < MiniTest::Test
     # Setup
     repository = Minitest::Mock.new
     repository.expect :update_amount, true, [Investments::Account]
+    repository.expect :create_asset, true, [Investments::Account, Object]
 
     asset_class = MiniTest::Mock.new
     asset_class.expect(
@@ -137,6 +138,7 @@ class InvestmentsAccountTest < MiniTest::Test
 
     repository = MiniTest::Mock.new
     repository.expect :update_amount, true, [Investments::Account]
+    repository.expect :destroy_asset, true, [Object]
 
     account = Investments::Account.new(
       account_params(

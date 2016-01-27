@@ -15,16 +15,17 @@ class InvestmentsAssetTest < MiniTest::Test
 
   def test_it_sells_itself_and_calculate_the_tax_if_taxable
     # Setup
-    tax_calculator = MiniTest::Mock.new
     selling_amount = 100
     tax = 15
 
-    asset = Investments::Asset.new(
-                                amount: selling_amount,
-                                taxable: true,
-                                tax_calculator: tax_calculator)
-
+    tax_calculator = MiniTest::Mock.new
     tax_calculator.expect :calculate_tax, tax
+
+    asset = Investments::Asset.new(
+      amount: selling_amount,
+      taxable: true,
+      tax_calculator: tax_calculator
+    )
 
     # Exercise
     price = asset.sell

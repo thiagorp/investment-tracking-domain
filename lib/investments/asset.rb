@@ -9,7 +9,11 @@ module Investments
       @initial_amount = args[:initial_amount]
       @price = args[:amount] || @initial_amount
       @start_date = args[:start_date]
-      @tax_calculator = args.fetch(:tax_calculator, TaxCalculators::Basic.new(asset: self))
+
+      @tax_calculator = args.fetch(
+        :tax_calculator,
+        TaxCalculators::Basic.new(asset: self)
+      )
     end
 
     def change_price(new_price)
