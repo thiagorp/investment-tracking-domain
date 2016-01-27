@@ -16,20 +16,26 @@ module Investments
 
     def deposit(amount)
       @unassigned_money += amount
+      @repository.update_amount(self)
     end
 
     def withdraw(amount)
       raise NotEnoughMoney unless have_enough_money?(amount)
+
       @unassigned_money -= amount
+      @repository.update_amount(self)
     end
 
     def invest(amount, asset_class: Asset)
       withdraw(amount)
 
-      @assets << asset_class.new(
+      asset = asset_class.new(
         initial_amount: amount,
-        start_date: Date.today
+        start_date: Date.today,
+        repository: @repository
       )
+
+      @assets << asset
     end
 
     def sell_asset(asset:, pre_taxes_price:)
