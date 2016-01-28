@@ -1,6 +1,6 @@
 require 'test_helper'
 require 'domain/investments/roles/account_repository'
-require 'investments/account'
+require 'domain/investments/account'
 
 class AccountRepositoryDouble
   def create_account(account)

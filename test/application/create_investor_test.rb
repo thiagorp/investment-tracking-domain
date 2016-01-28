@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'create_investor'
+require 'application/create_investor'
 
 class CreateInvestorTest < MiniTest::Test
   def test_it_creates_an_investor

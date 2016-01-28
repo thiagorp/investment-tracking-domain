@@ -1,4 +1,4 @@
-require 'investments/tax_calculators/basic'
+require 'domain/investments/tax_calculators/basic'
 
 module Investments
   class Asset
