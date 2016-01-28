@@ -1,6 +1,6 @@
 require 'test_helper'
 require 'domain/investments/roles/tax_calculatable'
-require 'domain/investments/tax_calculators/basic'
+require 'investment_tracking_domain/domain/investments/tax_calculators/basic'
 
 class AssetDouble
   attr_reader :days_invested

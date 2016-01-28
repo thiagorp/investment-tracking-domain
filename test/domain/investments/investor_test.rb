@@ -1,6 +1,6 @@
 require 'test_helper'
 require 'domain/investments/roles/investor_repository'
-require 'domain/investments/investor'
+require 'investment_tracking_domain/domain/investments/investor'
 
 class InvestorRepositoryDouble
   def create_investor(investor)

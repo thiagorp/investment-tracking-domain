@@ -1,6 +1,6 @@
-require 'domain/investments/account'
-require 'domain/investments/asset'
-require 'domain/investments/investor'
-require 'domain/investments/tax_calculators/basic'
+require 'investment_tracking_domain/domain/investments/account'
+require 'investment_tracking_domain/domain/investments/asset'
+require 'investment_tracking_domain/domain/investments/investor'
+require 'investment_tracking_domain/domain/investments/tax_calculators/basic'
 
-require 'application/create_investor'
+require 'investment_tracking_domain/application/create_investor'

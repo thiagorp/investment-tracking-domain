@@ -1,6 +1,6 @@
 require 'test_helper'
 require 'domain/investments/roles/tax_calculatable'
-require 'domain/investments/asset'
+require 'investment_tracking_domain/domain/investments/asset'
 
 class InvestmentsAssetTest < MiniTest::Test
   include TaxCalculatable

@@ -1,4 +1,4 @@
-require 'domain/investments/asset'
+require 'investment_tracking_domain/domain/investments/asset'
 
 module Investments
   class Account
