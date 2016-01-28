@@ -5,6 +5,9 @@ require 'investment_tracking_domain/domain/investments/investor'
 class InvestorRepositoryDouble
   def create_investor(investor)
   end
+
+  def get_investor(investor_id)
+  end
 end
 
 class InvestorRepositoryDoubleTest < MiniTest::Test
