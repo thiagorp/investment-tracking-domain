@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
+gemspec
+
 group :test do
-  gem 'rake'
-  gem 'simplecov', require: false
-  gem 'minitest', '~> 5.8.3'
+  gem 'simplecov', '~>0.11.1', require: false
 end
