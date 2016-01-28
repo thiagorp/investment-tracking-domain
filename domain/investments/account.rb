@@ -54,9 +54,6 @@ module Investments
     def have_enough_money?(amount)
       unassigned_money >= amount
     end
-
-    def build_new_asset(asset_class)
-    end
   end
 
   class NotEnoughMoney < StandardError; end
