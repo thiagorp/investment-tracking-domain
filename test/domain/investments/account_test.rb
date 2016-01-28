@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'domain/investments/roles/account_repository'
+require 'investment_tracking_domain/test_helpers/minitest/investments/roles/account_repository_role_test'
 require 'investment_tracking_domain/domain/investments/account'
 
 class AccountRepositoryDouble
@@ -17,7 +17,7 @@ class AccountRepositoryDouble
 end
 
 class AccountRepositoryDoubleTest < MiniTest::Test
-  include Investments::AccountRepository
+  include Investments::AccountRepositoryRoleTest
 
   def repository
     AccountRepositoryDouble.new

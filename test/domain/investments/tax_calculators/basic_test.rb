@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'domain/investments/roles/tax_calculatable'
+require 'investment_tracking_domain/test_helpers/minitest/investments/roles/tax_calculatable_role_test'
 require 'investment_tracking_domain/domain/investments/tax_calculators/basic'
 
 class AssetDouble
@@ -15,7 +15,7 @@ class AssetDouble
 end
 
 class AssetDoubleTest < MiniTest::Test
-  include TaxCalculatable
+  include Investments::TaxCalculatableRoleTest
 
   def tax_calculatable_object
     AssetDouble.new({})

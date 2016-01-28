@@ -1,9 +1,9 @@
 require 'test_helper'
-require 'domain/investments/roles/tax_calculatable'
+require 'investment_tracking_domain/test_helpers/minitest/investments/roles/tax_calculatable_role_test'
 require 'investment_tracking_domain/domain/investments/asset'
 
 class InvestmentsAssetTest < MiniTest::Test
-  include TaxCalculatable
+  include Investments::TaxCalculatableRoleTest
 
   def test_it_updates_its_price_if_valid
     asset = Investments::Asset.new(initial_amount: 1000)
