@@ -30,15 +30,6 @@ class InvestmentsInvestorTest < MiniTest::Test
     repository.verify
   end
 
-  def test_it_opens_an_account
-    investor = Investments::Investor.new(investor_params)
-    account = 'New account'
-
-    investor.open_account(account)
-
-    assert_includes investor.accounts, account
-  end
-
   private
 
   def investor_params(override = {})
