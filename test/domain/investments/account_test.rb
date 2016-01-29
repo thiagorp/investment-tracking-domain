@@ -59,22 +59,7 @@ class InvestmentsAccountTest < MiniTest::Test
   end
 
   def test_it_invests_money
-    # Setup
     repository = AccountRepositoryFake.new
-
-    asset_class = MiniTest::Mock.new
-    asset_class.expect(
-      :new,
-      'new investment',
-      [
-        {
-          initial_amount: 1000,
-          start_date: Date.today,
-          repository: repository
-        }
-      ]
-    )
-
     account = Investments::Account.new(
       account_params(
         unassigned_money: 1500,
@@ -82,15 +67,12 @@ class InvestmentsAccountTest < MiniTest::Test
       )
     )
 
-    # Exercise
-    account.invest(1000, asset_class: asset_class)
+    account.invest(1000)
 
-    # Verify
-    assert_includes repository.assets, 'new investment'
-    assert repository.updated_amount_for(account, 500)
-    asset_class.verify
+    assert_equal account.assets.size, 1
+    assert_equal repository.assets.size, 1
     assert_equal account.unassigned_money, 500
-    assert_includes account.assets, 'new investment'
+    assert repository.updated_amount_for(account, 500)
   end
 
   def test_it_raises_when_investing_more_than_available
@@ -113,7 +95,6 @@ class InvestmentsAccountTest < MiniTest::Test
     asset.expect :sell, after_taxes_price
 
     repository = AccountRepositoryFake.new(assets: [asset])
-
     account = Investments::Account.new(
       account_params(
         unassigned_money: 1000,
