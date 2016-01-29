@@ -2,62 +2,39 @@ require 'test_helper'
 require 'investment_tracking_domain/test_helpers/minitest/investments/roles/account_repository_role_test'
 require 'investment_tracking_domain/domain/investments/account'
 
-class AccountRepositoryDouble
-  def create_account(account)
-  end
-
-  def update_amount(account)
-  end
-
-  def create_asset(account, asset)
-  end
-
-  def destroy_asset(asset)
-  end
-end
-
-class AccountRepositoryDoubleTest < MiniTest::Test
-  include Investments::AccountRepositoryRoleTest
-
-  def repository
-    AccountRepositoryDouble.new
-  end
-end
+require_relative 'fakes/account_repository_fake'
 
 class InvestmentsAccountTest < MiniTest::Test
-  def test_it_calls_create_account_on_repository_if_no_id_is_given
-    repository = MiniTest::Mock.new
-    repository.expect :create_account, true, [Investments::Account]
+  def test_it_creates_an_account_if_id_is_nil
+    repository = AccountRepositoryFake.new
 
-    Investments::Account.new(
+    account = Investments::Account.new(
       account_params(
         id: nil,
         repository: repository
       )
     )
 
-    repository.verify
+    assert_includes repository.accounts, account
   end
 
   def test_it_deposits_money
-    repository = MiniTest::Mock.new
-    repository.expect :update_amount, true, [Investments::Account]
+    repository = AccountRepositoryFake.new
     account = Investments::Account.new(
       account_params(
-        unassigned_money: 0,
+        unassigned_money: 30,
         repository: repository
       )
     )
 
     account.deposit(1300)
 
-    repository.verify
-    assert_equal account.unassigned_money, 1300
+    assert repository.updated_amount_for(account, 1330)
+    assert_equal account.unassigned_money, 1330
   end
 
   def test_it_withdraws_money
-    repository = MiniTest::Mock.new
-    repository.expect :update_amount, true, [Investments::Account]
+    repository = AccountRepositoryFake.new
     account = Investments::Account.new(
       account_params(
         unassigned_money: 1000,
@@ -67,7 +44,7 @@ class InvestmentsAccountTest < MiniTest::Test
 
     account.withdraw(300)
 
-    repository.verify
+    assert repository.updated_amount_for(account, 700)
     assert_equal account.unassigned_money, 700
   end
 
@@ -83,9 +60,7 @@ class InvestmentsAccountTest < MiniTest::Test
 
   def test_it_invests_money
     # Setup
-    repository = Minitest::Mock.new
-    repository.expect :update_amount, true, [Investments::Account]
-    repository.expect :create_asset, true, [Investments::Account, Object]
+    repository = AccountRepositoryFake.new
 
     asset_class = MiniTest::Mock.new
     asset_class.expect(
@@ -111,8 +86,9 @@ class InvestmentsAccountTest < MiniTest::Test
     account.invest(1000, asset_class: asset_class)
 
     # Verify
+    assert_includes repository.assets, 'new investment'
+    assert repository.updated_amount_for(account, 500)
     asset_class.verify
-    repository.verify
     assert_equal account.unassigned_money, 500
     assert_includes account.assets, 'new investment'
   end
@@ -136,9 +112,7 @@ class InvestmentsAccountTest < MiniTest::Test
     asset.expect :change_price, nil, [selling_price]
     asset.expect :sell, after_taxes_price
 
-    repository = MiniTest::Mock.new
-    repository.expect :update_amount, true, [Investments::Account]
-    repository.expect :destroy_asset, true, [Object]
+    repository = AccountRepositoryFake.new(assets: [asset])
 
     account = Investments::Account.new(
       account_params(
@@ -156,7 +130,8 @@ class InvestmentsAccountTest < MiniTest::Test
 
     # Verify
     asset.verify
-    repository.verify
+    refute_includes repository.assets, asset
+    assert repository.updated_amount_for(account, 1000 + after_taxes_price)
     assert_equal account.unassigned_money, 1000 + after_taxes_price
     refute_includes account.assets, asset
   end
@@ -177,7 +152,7 @@ class InvestmentsAccountTest < MiniTest::Test
   def account_params(override)
     {
       id: 1,
-      repository: AccountRepositoryDouble.new
+      repository: AccountRepositoryFake.new
     }.merge(override)
   end
 end
