@@ -4,8 +4,7 @@ module Investments
 
     def initialize(args)
       @name = args[:name]
-
-      @id = @repository.create_investor(self)
+      @id = args[:id]
     end
   end
 end

@@ -5,9 +5,9 @@ module Investments
       assert_equal repository.method(:create_investor).arity, 1
     end
 
-    def test_it_responds_to_get_investor
-      assert_respond_to repository, :get_investor
-      assert_equal repository.method(:get_investor).arity, 1
+    def test_it_responds_to_update_investor
+      assert_respond_to repository, :update_investor
+      assert_equal repository.method(:update_investor).arity, 1
     end
   end
 end
