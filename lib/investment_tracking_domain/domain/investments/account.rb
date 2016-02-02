@@ -10,21 +10,17 @@ module Investments
       @assets = args[:assets] || []
       @investor = args[:investor]
 
-      @repository = args[:repository]
-
-      @id = args[:id] || @repository.create_account(self)
+      @id = args[:id]
     end
 
     def deposit(amount)
       @unassigned_money += amount
-      @repository.update_amount(self)
     end
 
     def withdraw(amount)
       raise NotEnoughMoney unless have_enough_money?(amount)
 
       @unassigned_money -= amount
-      @repository.update_amount(self)
     end
 
     def invest(amount, asset_class: Asset)
@@ -33,11 +29,9 @@ module Investments
       asset = asset_class.new(
         initial_amount: amount,
         start_date: Date.today,
-        repository: @repository
       )
 
       @assets << asset
-      @repository.create_asset(self, asset)
     end
 
     def sell_asset(asset:, pre_taxes_price:)
@@ -46,7 +40,6 @@ module Investments
       asset.change_price(pre_taxes_price)
       deposit(asset.sell)
       @assets.delete(asset)
-      @repository.destroy_asset(asset)
     end
 
     private
